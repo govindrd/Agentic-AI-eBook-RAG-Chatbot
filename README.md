@@ -6,6 +6,9 @@ FastAPI question answering grounded only in the assignment's Agentic AI eBook PD
 
 ```text
 rag-agentic-ai/
+├── Images/
+│   ├── Image-1.png
+│   └── Image-2.png
 ├── data/Ebook-Agentic-AI.pdf     # Place the supplied PDF here; not bundled
 ├── src/
 │   ├── __init__.py
@@ -19,8 +22,6 @@ rag-agentic-ai/
 └── README.md
 ```
 
-Keep the assignment PDF at `data/Ebook-Agentic-AI.pdf` or configure `PDF_PATH`. The PDF is excluded from version control, so a fresh checkout must supply its own copy; no eBook content is fabricated.
-
 ## Prerequisites and setup
 
 Use Python 3.11–3.13 and a Pinecone API key. Local embeddings and the default local chat model do not require OpenAI credits; the instruct model downloads from Hugging Face on its first use. Create and activate a virtual environment from this project directory:
@@ -31,10 +32,6 @@ py -3.12 -m venv .venv
 python -m pip install -r requirements.txt
 Copy-Item .env.example .env
 ```
-
-On macOS/Linux use `python3.12 -m venv .venv`, `source .venv/bin/activate`, and `cp .env.example .env`. Set `PINECONE_API_KEY` in `.env`. Defaults are `CHAT_PROVIDER=local`, `LOCAL_CHAT_MODEL=Qwen/Qwen2.5-0.5B-Instruct`, and `sentence-transformers/all-MiniLM-L6-v2` for embeddings; both models run locally and download on first use. Pinecone uses a separate `agentic-ai-ebook-local` index so it does not conflict with an older 1536-dimensional index. Retrieval filters matches below `RETRIEVAL_MIN_SCORE` (default `0.3`) to refuse unrelated questions before answer generation. Choose a Pinecone cloud/region supported by your account. If you set a custom embedding model or dimension, they must match the index. The local chat model requires sufficient RAM/disk and may be slow on CPU.
-
-If you have funded OpenAI API access and want the hosted model, set `CHAT_PROVIDER=openai` and provide `OPENAI_API_KEY`. An OpenAI subscription or ChatGPT plan does not itself include API credits. With `CHAT_PROVIDER=local`, the key is not read or called.
 
 ## Ingest the PDF
 
@@ -83,6 +80,12 @@ Each response has this shape:
 4. `app.py` exposes the graph through FastAPI's `/chat` endpoint.
 
 The retrieval, generator, and grader are injected interfaces. Tests use deterministic fakes and do not require credentials, network access, or paid API calls.
+
+## Screenshots
+
+![Application screenshot 1](Images/Image-1.png)
+
+![Application screenshot 2](Images/Image-2.png)
 
 ## Troubleshooting empty retrieval
 
